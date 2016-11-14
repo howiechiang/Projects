@@ -7,6 +7,82 @@ from OpenGL.GLU import *
 from math import radians
 from pygame.locals import *
 
+########################################################################################################################
+# OpenGL Initialization
+########################################################################################################################
+
+# Initialize camera and view perspective
+def resize(width, height):
+    glViewport(0, 0, width, height)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(45.0, float(width) / height, 0.001, 10.0)
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+    gluLookAt(0.0, 1.0, -5.0,
+              0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0)
+
+# Graphics & OpenGL Settings
+def init():
+    glEnable(GL_DEPTH_TEST)
+    glClearColor(0.0, 0.0, 0.0, 0.0)
+    glShadeModel(GL_SMOOTH)
+    glEnable(GL_BLEND)
+    glEnable(GL_POLYGON_SMOOTH)
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
+    glEnable(GL_COLOR_MATERIAL)
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
+
+
+########################################################################################################################
+# OpenGL Objects
+########################################################################################################################
+
+# Grid Lines
+def gridLines():
+    glColor3fv((1, 1, 1))
+    glLineWidth(2)
+
+    glBegin(GL_LINES)
+
+    for x in range(-20, 22, 2):
+        glVertex3f(x / 10., -1, -1)
+        glVertex3f(x / 10., -1, 1)
+
+    for x in range(-20, 22, 2):
+        glVertex3f(x / 10., -1, 1)
+        glVertex3f(x / 10., 1, 1)
+
+    for z in range(-10, 12, 2):
+        glVertex3f(-2, -1, z / 10.)
+        glVertex3f(2, -1, z / 10.)
+
+    for z in range(-10, 12, 2):
+        glVertex3f(-2, -1, z / 10.)
+        glVertex3f(-2, 1, z / 10.)
+
+    # for z in range(-10, 12, 2):
+    #     glVertex3f(2, -1, z / 10.)
+    #     glVertex3f(2, 1, z / 10.)
+
+    for y in range(-10, 12, 2):
+        glVertex3f(-2, y / 10., 1)
+        glVertex3f(2, y / 10., 1)
+
+    for y in range(-10, 12, 2):
+        glVertex3f(-2, y / 10., 1)
+        glVertex3f(-2, y / 10., -1)
+
+    # for y in range(-10, 12, 2):
+    #     glVertex3f(2, y / 10., 1)
+    #     glVertex3f(2, y / 10., -1)
+
+    glEnd()
+
+# Representation of IMU
 class Cube(object):
 
     def __init__(self, position, color):
@@ -83,73 +159,6 @@ class Cube(object):
                 glVertex3fv(self.vertices[vertex])
         glEnd()
 
-########################################################################################################################
-# Functions for OpenGL
-########################################################################################################################
-
-def resize(width, height):
-    glViewport(0, 0, width, height)
-    glMatrixMode(GL_PROJECTION)
-    glLoadIdentity()
-    gluPerspective(45.0, float(width) / height, 0.001, 10.0)
-    glMatrixMode(GL_MODELVIEW)
-    glLoadIdentity()
-    gluLookAt(0.0, 1.0, -5.0,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0)
-
-def init():
-    glEnable(GL_DEPTH_TEST)
-    glClearColor(0.0, 0.0, 0.0, 0.0)
-    glShadeModel(GL_SMOOTH)
-    glEnable(GL_BLEND)
-    glEnable(GL_POLYGON_SMOOTH)
-    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
-    glEnable(GL_COLOR_MATERIAL)
-    glEnable(GL_LIGHTING)
-    glEnable(GL_LIGHT0)
-    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
-
-def gridLines():
-    glColor3fv((1, 1, 1))
-    glLineWidth(2)
-
-    glBegin(GL_LINES)
-
-    for x in range(-20, 22, 2):
-        glVertex3f(x / 10., -1, -1)
-        glVertex3f(x / 10., -1, 1)
-
-    for x in range(-20, 22, 2):
-        glVertex3f(x / 10., -1, 1)
-        glVertex3f(x / 10., 1, 1)
-
-    for z in range(-10, 12, 2):
-        glVertex3f(-2, -1, z / 10.)
-        glVertex3f(2, -1, z / 10.)
-
-    for z in range(-10, 12, 2):
-        glVertex3f(-2, -1, z / 10.)
-        glVertex3f(-2, 1, z / 10.)
-
-    # for z in range(-10, 12, 2):
-    #     glVertex3f(2, -1, z / 10.)
-    #     glVertex3f(2, 1, z / 10.)
-
-    for y in range(-10, 12, 2):
-        glVertex3f(-2, y / 10., 1)
-        glVertex3f(2, y / 10., 1)
-
-    for y in range(-10, 12, 2):
-        glVertex3f(-2, y / 10., 1)
-        glVertex3f(-2, y / 10., -1)
-
-    # for y in range(-10, 12, 2):
-    #     glVertex3f(2, y / 10., 1)
-    #     glVertex3f(2, y / 10., -1)
-
-    glEnd()
-
 
 ########################################################################################################################
 # Functions for OpenGL
@@ -174,7 +183,7 @@ def main():
 
     cube = Cube((0.0, 0.0, 0.0), (0.5, 0.5, 0.7))
 
-    i =0
+    #i =0
 
     while True:
 
@@ -211,13 +220,15 @@ def main():
         values = read_values()
         x_angle = values[0]
         y_angle = values[1]
+        z_angle = values[2]
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # clear previous image
         gridLines()
         glPushMatrix()
 
         glRotate(float(x_angle), 1, 0, 0)
-        glRotate(-float(y_angle), 0, 0, 1)
+        #glRotate(-float(y_angle), 0, 0, 1)
+        #glRotate(float(z_angle), 0, 1, 0)
 
         cube.render()
         glPopMatrix()
