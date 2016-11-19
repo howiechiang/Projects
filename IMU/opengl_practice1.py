@@ -205,6 +205,8 @@ def main():
                 #     glRotate(5, -1, 0, 0)
                 # if event.key == pygame.K_DOWN:
                 #     glRotate(5,  1, 0, 0)
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
 
         # #Obtain camera position
         # pos = glGetDoublev(GL_MODELVIEW_MATRIX)
@@ -227,8 +229,8 @@ def main():
         glPushMatrix()
 
         glRotate(float(x_angle), 1, 0, 0)
-        #glRotate(-float(y_angle), 0, 0, 1)
-        #glRotate(float(z_angle), 0, 1, 0)
+        glRotate(float(y_angle), 0, 1, 0)
+        glRotate(float(z_angle), 0, 0, 1)
 
         cube.render()
         glPopMatrix()
