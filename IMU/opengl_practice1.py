@@ -34,12 +34,15 @@ def init():
     glEnable(GL_COLOR_MATERIAL)
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
-    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0))
 
 
 ########################################################################################################################
 # OpenGL Objects
 ########################################################################################################################
+# X - (+)Left (-)Right
+# Y - (+)Up (-)Down
+# Z - (+)In (-)Out
 
 # Grid Lines
 def gridLines():
@@ -228,9 +231,9 @@ def main():
         gridLines()
         glPushMatrix()
 
-        glRotate(float(x_angle), 1, 0, 0)
-        glRotate(float(y_angle), 0, 1, 0)
-        glRotate(float(z_angle), 0, 0, 1)
+        glRotate(float(x_angle), 0, 0, 1)
+        glRotate(float(y_angle), 1, 0, 0)
+        #glRotate(float(z_angle), 0, 0, 1)
 
         cube.render()
         glPopMatrix()
