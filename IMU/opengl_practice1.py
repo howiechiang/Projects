@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import pygame
-import urllib
+import urllib.request
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from math import radians
@@ -168,11 +168,11 @@ class Cube(object):
 ########################################################################################################################
 
 def read_values():
-    link = "http://192.168.2.22:8080" # Change this address to your settings
-    f = urllib.urlopen(link)
-    myfile = f.read()
+    link = "http://169.254.106.215:8080/" # Change this address to your settings
+    f = urllib.request.urlopen(link)
+    myfile = f.read().decode('utf-8')
+    print(myfile)
     return myfile.split(" ")
-
 
 
 def main():
